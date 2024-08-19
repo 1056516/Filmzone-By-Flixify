@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flixify</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #1f1f1f;
+        }
+        header img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: white;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+        .curved-text {
+            margin: 20px 0;
+        }
+        .curved-text h1, .curved-text h2 {
+            display: inline-block;
+            transform: rotate(-10deg);
+            color: #ffffff;
+            text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff;
+        }
+        .curved-text h2 {
+            font-size: 1.2em;
+        }
+        .search-bar {
+            margin: 20px 0;
+        }
+        .search-bar input {
+            padding: 15px;
+            width: 500px;
+            border: none;
+            border-radius: 25px;
+            background-color: #000;
+            color: white;
+        }
+        .movie {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .movie img {
+            width: 200px;
+            height: 300px;
+            border-radius: 10px;
+        }
+        .movie a {
+            text-decoration: none;
+            color: white;
+        }
+        .movie a:hover {
+            text-decoration: none;
+        }
+        .movie:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #fff;
+        }
+        .active-page {
+            background-color: #000;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+        .loading p {
+            font-size: 1.5em;
+        }
+        .loading .spinner {
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #fff;
+            border-top: 5px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .no-results {
+            margin: 20px 0;
+        }
+        .no-results p {
+            font-size: 1.5em;
+        }
+        .refresh-button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: white;
+            border: 2px solid white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/1dJcD2s/Screenshot-2024-08-17-8-40-24-PM-removebg-preview-2.png" alt="Flixify Logo">
+        <div class="buttons">
+            <button class="active-page" onclick="searchPage()">Search</button>
+            <button onclick="todaysPick()">Today's Pick</button>
+        </div>
+    </header>
+    <div class="curved-text">
+        <h1>FLIXIFY</h1>
+        <h2>Search to get started</h2>
+    </div>
+    <div class="search-bar" id="searchBar">
+        <input type="text" id="searchInput" placeholder="Search Flixify">
+    </div>
+    <div id="loading" class="loading">
+        <p>Loading</p>
+        <div class="spinner"></div>
+    </div>
+    <div id="movieResults"></div>
+    <div id="noResults" class="no-results" style="display: none;">
+        <p>No Results Found</p>
+        <button class="refresh-button" onclick="refreshPage()">Refresh</button>
+    </div>
+
+    <script>
+        const movies = [
+            { title: "Movie Title 1", image: "https://i.ebayimg.com/images/g/6zcAAOSwiJ9jObVr/s-l1600.jpg", url: "movie1.html" },
+            { title: "Movie Title 2", image: "movie2.jpg", url: "movie2.html" }
+        ];
+
+        function searchPage() {
+            // Implement search page functionality
+        }
+
+        function todaysPick() {
+            // Implement today's pick functionality
+            window.location.href = 'your-movie-url.html'; // Change to your movie URL
+        }
+
+        function refreshPage() {
+            document.getElementById('searchBar').style.display = 'block';
+            document.getElementById('noResults').style.display = 'none';
+            document.getElementById('movieResults').innerHTML = '';
+            document.getElementById('searchInput').value = '';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(query));
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('movieResults').innerHTML = '';
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                if (filteredMovies.length === 0) {
+                    document.getElementById('searchBar').style.display = 'none';
+                    document.getElementById('noResults').style.display = 'block';
+                } else {
+                    const results = filteredMovies.map(movie => `
+                        <div class="movie">
+                            <a href="${movie.url}" target="_self">
+                                <img src="${movie.image}" alt="${movie.title}">
+                                <p>${movie.title}</p>
+                            </a>
+                        </div>
+                    `).join('');
+                    document.getElementById('movieResults').innerHTML = results;
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
