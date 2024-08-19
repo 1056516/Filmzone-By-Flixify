@@ -1,12 +1,13 @@
 <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/1dJcD2s/Screenshot-2024-08-17-8-40-24-PM-removebg-preview-2.png">
 
-<meta name="description" content="Filmzone. A powerful movie streaming service offering all the newest movies!"
+<meta name="description" content="Filmzone. A powerful movie streaming service to watch all your favorites!"
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filmzone (By Flixify)</title>
+    <title>Filmzone (By Flixify TV)</title>
     <style>
         body {
             background-color: #121212;
@@ -51,6 +52,8 @@
         }
         .search-bar {
             margin: 20px 0;
+            position: relative;
+            display: inline-block;
         }
         .search-bar input {
             padding: 15px;
@@ -59,6 +62,19 @@
             border-radius: 25px;
             background-color: #000;
             color: white;
+        }
+        .search-bar button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .search-bar button img {
+            width: 20px;
+            height: 20px;
         }
         .movie {
             display: inline-block;
@@ -140,6 +156,8 @@
     </div>
     <div class="search-bar" id="searchBar">
         <input type="text" id="searchInput" placeholder="Search Flixify">
+        <button onclick="performSearch()">
+        </button>
     </div>
     <div id="loading" class="loading">
         <p>Loading</p>
@@ -153,7 +171,7 @@
 
     <script>
         const movies = [
-            { title: "Movie Title 1", image: "https://i.ebayimg.com/images/g/6zcAAOSwiJ9jObVr/s-l1600.jpg", url: "movie1.html" },
+            { title: "Deadpool 2", image: "https://i.ebayimg.com/images/g/6zcAAOSwiJ9jObVr/s-l1600.jpg", url: "https://drive.google.com/file/d/1NGtIqan_H9hflLfF1bwHiKo71ksrs49b/preview" },
             { title: "Movie Title 2", image: "movie2.jpg", url: "movie2.html" }
         ];
 
@@ -173,8 +191,12 @@
             document.getElementById('searchInput').value = '';
         }
 
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const query = this.value.toLowerCase();
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (query.length === 0) {
+                alert('Please enter a search term.');
+                return;
+            }
             const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(query));
             document.getElementById('loading').style.display = 'block';
             document.getElementById('movieResults').innerHTML = '';
@@ -184,6 +206,8 @@
                     document.getElementById('searchBar').style.display = 'none';
                     document.getElementById('noResults').style.display = 'block';
                 } else {
+                    document.getElementById('searchBar').style.display = 'block';
+                    document.getElementById('noResults').style.display = 'none';
                     const results = filteredMovies.map(movie => `
                         <div class="movie">
                             <a href="${movie.url}" target="_self">
@@ -195,7 +219,19 @@
                     document.getElementById('movieResults').innerHTML = results;
                 }
             }, 3000);
+        }
+
+        // Allow search on pressing Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
         });
+
+        // Function to change the search icon
+        function changeSearchIcon(newIconUrl) {
+            document.getElementById('searchIcon').src = newIconUrl;
+        }
     </script>
 </body>
 </html>
